@@ -12,8 +12,7 @@ export default function () {
 
   const handleLogin = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    // Here you can add your login logic
-    // For simplicity, let's just redirect to a dashboard page
+    localStorage.setItem('token', 'blabla')
     router.push('/dashboard')
   }
 

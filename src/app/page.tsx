@@ -1,113 +1,144 @@
+'use client'
+import {
+  Avatar,
+  Dropdown,
+  DropdownDivider,
+  DropdownHeader,
+  DropdownItem,
+  Navbar,
+  NavbarBrand,
+  NavbarCollapse,
+  NavbarLink,
+  NavbarToggle,
+  DarkThemeToggle
+} from 'flowbite-react'
+import { useRouter } from 'next/navigation'
+import { AppFooter } from './components/AppFooter'
+import { PricingCard } from './components/PricingCard'
+import { PricingCardItem } from './components/PricingCardItem'
 import Image from 'next/image'
 
 export default function Home () {
+  const router = useRouter()
+
+  const handleSignOut = () => {
+    router.push('/')
+  }
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
+    <main className="min-h-screen">
+      <Navbar fluid className='bg-gray-50 sticky top-0'>
+        <div className='flex gap-4'>
+          <NavbarBrand href="/">
+            <img src="/logo.png" className="mr-3 h-6 sm:h-9" alt="Arithmetic Calculator Logo" />
+          </NavbarBrand>
         </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
-      </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{' '}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
+        <div className="flex md:order-2 gap-4">
+          <DarkThemeToggle />
+          <Dropdown
+            arrowIcon={false}
+            inline
+            label={
+              <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+            }
+          >
+            <DropdownHeader>
+              <span className="block text-sm">Bonnie Green</span>
+              <span className="block truncate text-sm font-medium">name@example.com</span>
+            </DropdownHeader>
+            <DropdownItem>Settings</DropdownItem>
+            <DropdownDivider />
+            <DropdownItem onClick={handleSignOut}>Sign out</DropdownItem>
+          </Dropdown>
+          <NavbarToggle />
+        </div>
+        <NavbarCollapse>
+          <NavbarLink href="#home">Home</NavbarLink>
+          <NavbarLink href="#about">About</NavbarLink>
+          <NavbarLink href="#pricing">Pricing</NavbarLink>
+        </NavbarCollapse>
+      </Navbar>
+      <article id='home' className="w-full">
+        <section className="bg-white dark:bg-gray-700 h-screen p-4">
+          <div className="container md:h-full mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+            <div className="text-gray-900 dark:text-white md:basis-1/2 text-center md:text-left">
+                <h1 className="text-3xl md:text-5xl font-bold">Welcome to Arithmetic Calculator</h1>
+                <p className="mt-4">Perform calculations and manage your credits with ease</p>
+            </div>
+            <div className='md:basis-1/2 flex justify-center'>
+              <Image
+                alt='Maths'
+                width='400'
+                height='400'
+                src='/mathematics.png'
+              />
+            </div>
+          </div>
+        </section>
+        <section id="about" className="bg-gray-200 dark:bg-gray-800 md:h-screen flex flex-col justify-center items-center p-4">
+          <h2 className="text-3xl md:text-4xl font-bold mb-4 text-gray-900 dark:text-white">About Us</h2>
+          <div className="container mx-auto flex flex-col md:flex-row justify-between items-center gap-16">
+            <div className='md:basis-1/2 flex justify-center'>
+              <Image
+                alt='Maths'
+                width='400'
+                height='400'
+                src='/learning.png'
+              />
+            </div>
+            <div className="text-gray-900 text-md md:text-lg dark:text-white md:basis-1/2">
+              <p>Welcome to our Simple Calculator Web Platform! We provide an easy-to-use interface for performing basic mathematical calculations like addition, subtraction, multiplication, and division. Additionally, you can generate random strings and even calculate square roots.</p>
+              <p className="mt-4">Our platform allows you to manage your credits, ensuring that you have enough balance to perform calculations. Each operation has a separate cost, deducted from your balance. If your balance is insufficient, the request will be denied.</p>
+            </div>
+          </div>
+        </section>
+        <section id="pricing" className="bg-white dark:bg-gray-700 dark:text-white text-gray-900 w-full py-16">
+          <div className="container mx-auto">
+            <h2 className="text-4xl font-bold text-center mb-8 dark:text-white">Our Pricing Plans</h2>
+            <div className="flex flex-col md:flex-row justify-center items-center gap-4">
+              <PricingCard title='Basic Plan' price='49'>
+                <PricingCardItem title='500 credits' />
+                <PricingCardItem title='Addition' />
+                <PricingCardItem title='Multiplication' />
+                <PricingCardItem title='Division' />
+                <PricingCardItem title='Square root' />
+                <PricingCardItem title='Exponential and logarithmic functions' locked />
+                <PricingCardItem title='Trigonometric functions (sine, cosine, tangent)' locked />
+                <PricingCardItem title='History of recent calculations' locked />
+                <PricingCardItem title='Customizable themes for the calculator interface' locked />
+                <PricingCardItem title='Graphing calculator functionality' locked />
+                <PricingCardItem title='24×7 phone & email support' locked />
+              </PricingCard>
+              <PricingCard title='Standard Plan' price='99'>
+                <PricingCardItem title='1200 credits' />
+                <PricingCardItem title='Addition' />
+                <PricingCardItem title='Multiplication' />
+                <PricingCardItem title='Division' />
+                <PricingCardItem title='Square root' />
+                <PricingCardItem title='Exponential and logarithmic functions' />
+                <PricingCardItem title='Trigonometric functions (sine, cosine, tangent)' />
+                <PricingCardItem title='History of recent calculations' locked />
+                <PricingCardItem title='Customizable themes for the calculator interface' locked />
+                <PricingCardItem title='Graphing calculator functionality' locked />
+                <PricingCardItem title='24×7 phone & email support' />
+              </PricingCard>
+              <PricingCard title='Premium Plan' price='149'>
+                <PricingCardItem title='2000 credits' />
+                <PricingCardItem title='Addition' />
+                <PricingCardItem title='Multiplication' />
+                <PricingCardItem title='Division' />
+                <PricingCardItem title='Square root' />
+                <PricingCardItem title='Exponential and logarithmic functions' />
+                <PricingCardItem title='Trigonometric functions (sine, cosine, tangent)' />
+                <PricingCardItem title='History of recent calculations' />
+                <PricingCardItem title='Customizable themes for the calculator interface' />
+                <PricingCardItem title='Graphing calculator functionality' />
+                <PricingCardItem title='24×7 phone & email support' />
+              </PricingCard>
+            </div>
+          </div>
+        </section>
+        <AppFooter/>
+      </article>
     </main>
   )
 }
