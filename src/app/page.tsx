@@ -1,6 +1,7 @@
 'use client'
 import {
   Avatar,
+  Button,
   Dropdown,
   DropdownDivider,
   DropdownHeader,
@@ -21,6 +22,8 @@ import Image from 'next/image'
 export default function Home () {
   const router = useRouter()
 
+  const isLoggedIn = true
+
   const handleSignOut = () => {
     router.push('/')
   }
@@ -34,21 +37,31 @@ export default function Home () {
         </div>
         <div className="flex md:order-2 gap-4">
           <DarkThemeToggle />
-          <Dropdown
-            arrowIcon={false}
-            inline
-            label={
-              <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
-            }
-          >
-            <DropdownHeader>
-              <span className="block text-sm">Bonnie Green</span>
-              <span className="block truncate text-sm font-medium">name@example.com</span>
-            </DropdownHeader>
-            <DropdownItem>Settings</DropdownItem>
-            <DropdownDivider />
-            <DropdownItem onClick={handleSignOut}>Sign out</DropdownItem>
-          </Dropdown>
+          {isLoggedIn
+            ? (
+                <Dropdown
+                  arrowIcon={false}
+                  inline
+                  label={
+                    <Avatar alt="User settings" img="https://flowbite.com/docs/images/people/profile-picture-5.jpg" rounded />
+                  }
+                >
+                  <DropdownHeader>
+                    <span className="block text-sm">Bonnie Green</span>
+                    <span className="block truncate text-sm font-medium">name@example.com</span>
+                  </DropdownHeader>
+                  <DropdownItem href='/dashboard'>Dashboard</DropdownItem>
+                  <DropdownDivider />
+                  <DropdownItem onClick={handleSignOut}>Sign out</DropdownItem>
+                </Dropdown>
+              )
+            : (
+                <div className='flex gap-2'>
+                  <Button href='/login'>Login</Button>
+                  <Button href='/register' outline>Sign up</Button>
+                </div>
+              )
+          }
           <NavbarToggle />
         </div>
         <NavbarCollapse>
@@ -86,8 +99,7 @@ export default function Home () {
               />
             </div>
             <div className="text-gray-900 text-md md:text-lg dark:text-white md:basis-1/2">
-              <p>Welcome to our Simple Calculator Web Platform! We provide an easy-to-use interface for performing basic mathematical calculations like addition, subtraction, multiplication, and division. Additionally, you can generate random strings and even calculate square roots.</p>
-              <p className="mt-4">Our platform allows you to manage your credits, ensuring that you have enough balance to perform calculations. Each operation has a separate cost, deducted from your balance. If your balance is insufficient, the request will be denied.</p>
+              <p>We provide an easy-to-use interface for performing basic mathematical calculations like addition, subtraction, multiplication, and division. Additionally, you can generate random strings and even calculate square roots.</p>
             </div>
           </div>
         </section>
@@ -98,11 +110,13 @@ export default function Home () {
               <PricingCard title='Basic Plan' price='49'>
                 <PricingCardItem title='500 credits' />
                 <PricingCardItem title='Addition' />
+                <PricingCardItem title='Subtraction' />
                 <PricingCardItem title='Multiplication' />
                 <PricingCardItem title='Division' />
                 <PricingCardItem title='Square root' />
                 <PricingCardItem title='Exponential and logarithmic functions' locked />
                 <PricingCardItem title='Trigonometric functions (sine, cosine, tangent)' locked />
+                <PricingCardItem title='Work with multiple numbers' locked />
                 <PricingCardItem title='History of recent calculations' locked />
                 <PricingCardItem title='Customizable themes for the calculator interface' locked />
                 <PricingCardItem title='Graphing calculator functionality' locked />
@@ -111,11 +125,13 @@ export default function Home () {
               <PricingCard title='Standard Plan' price='99'>
                 <PricingCardItem title='1200 credits' />
                 <PricingCardItem title='Addition' />
+                <PricingCardItem title='Subtraction' />
                 <PricingCardItem title='Multiplication' />
                 <PricingCardItem title='Division' />
                 <PricingCardItem title='Square root' />
                 <PricingCardItem title='Exponential and logarithmic functions' />
                 <PricingCardItem title='Trigonometric functions (sine, cosine, tangent)' />
+                <PricingCardItem title='Work with multiple numbers' />
                 <PricingCardItem title='History of recent calculations' locked />
                 <PricingCardItem title='Customizable themes for the calculator interface' locked />
                 <PricingCardItem title='Graphing calculator functionality' locked />
@@ -124,11 +140,13 @@ export default function Home () {
               <PricingCard title='Premium Plan' price='149'>
                 <PricingCardItem title='2000 credits' />
                 <PricingCardItem title='Addition' />
+                <PricingCardItem title='Subtraction' />
                 <PricingCardItem title='Multiplication' />
                 <PricingCardItem title='Division' />
                 <PricingCardItem title='Square root' />
                 <PricingCardItem title='Exponential and logarithmic functions' />
                 <PricingCardItem title='Trigonometric functions (sine, cosine, tangent)' />
+                <PricingCardItem title='Work with multiple numbers' />
                 <PricingCardItem title='History of recent calculations' />
                 <PricingCardItem title='Customizable themes for the calculator interface' />
                 <PricingCardItem title='Graphing calculator functionality' />

@@ -7,14 +7,12 @@ import {
   DropdownItem,
   Navbar,
   NavbarBrand,
-  NavbarCollapse,
-  NavbarLink,
-  NavbarToggle,
   DarkThemeToggle,
   Sidebar
 } from 'flowbite-react'
 import { SidebarCta } from './components/SidebarCta'
-import { HiPlus, HiChartPie, HiViewList, HiMenu } from 'react-icons/hi'
+import { HiPlus, HiMinus, HiChartPie, HiViewList, HiMenu } from 'react-icons/hi'
+import { FaDivide, FaAsterisk, FaSquareRootVariable } from 'react-icons/fa6'
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 
@@ -73,29 +71,31 @@ export default function DashboardLayout ({
             <DropdownDivider />
             <DropdownItem onClick={handleSignOut}>Sign out</DropdownItem>
           </Dropdown>
-          <NavbarToggle />
         </div>
-        <NavbarCollapse>
-          <NavbarLink href="#" active>
-            Home
-          </NavbarLink>
-          <NavbarLink href="#">About</NavbarLink>
-          <NavbarLink href="#">Services</NavbarLink>
-          <NavbarLink href="#">Pricing</NavbarLink>
-          <NavbarLink href="#">Contact</NavbarLink>
-        </NavbarCollapse>
       </Navbar>
       <section className='flex-grow flex overflow-hidden dark:bg-gray-900'>
         <Sidebar collapsed={isCollapsed} collapseBehavior='collapse' className='flex'>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
-              <Sidebar.Item href="#" icon={HiChartPie}>
+              <Sidebar.Item href="/dashboard" icon={HiChartPie}>
                 Dashboard
               </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiPlus}>
-                New Operation
+              <Sidebar.Item href="/dashboard/addition" icon={HiPlus}>
+                Addition
               </Sidebar.Item>
-              <Sidebar.Item href="#" icon={HiViewList}>
+              <Sidebar.Item href="/dashboard/subtraction" icon={HiMinus}>
+                Subtraction
+              </Sidebar.Item>
+              <Sidebar.Item href="/dashboard/multiplication" icon={FaAsterisk}>
+                Multiplication
+              </Sidebar.Item>
+              <Sidebar.Item href="/dashboard/division" icon={FaDivide}>
+                Division
+              </Sidebar.Item>
+              <Sidebar.Item href="/dashboard/square-root" icon={FaSquareRootVariable}>
+                Square Root
+              </Sidebar.Item>
+              <Sidebar.Item href="/dashboard/records" icon={HiViewList}>
                 Records
               </Sidebar.Item>
             </Sidebar.ItemGroup>
