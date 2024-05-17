@@ -1,6 +1,7 @@
 'use client'
 import {
   Avatar,
+  Badge,
   DarkThemeToggle,
   Dropdown,
   DropdownDivider,
@@ -14,6 +15,7 @@ import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { FaAsterisk, FaDivide, FaSquareRootVariable } from 'react-icons/fa6'
 import { HiChartPie, HiMenu, HiMinus, HiPlus, HiViewList } from 'react-icons/hi'
+import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import { SidebarCta } from './components/SidebarCta'
 
 export default function DashboardLayout ({
@@ -24,13 +26,16 @@ export default function DashboardLayout ({
   const router = useRouter()
   const [token, setToken] = useState<null | string | undefined>(undefined)
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
+  const [user, setUser] = useState({})
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedToken = localStorage.getItem('token')
       const collapsed = localStorage.getItem('sidebar-collapsed') === 'yes'
+      const user = JSON.parse(localStorage.getItem('user') ?? '{}')
       setToken(storedToken)
       setSidebarCollapsed(collapsed)
+      setUser(user)
     }
   }, [])
 
@@ -57,6 +62,7 @@ export default function DashboardLayout ({
 
   const handleSignOut = () => {
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     return router.push('/')
   }
 
@@ -71,6 +77,9 @@ export default function DashboardLayout ({
         </div>
         <div className="flex md:order-2 gap-4">
           <DarkThemeToggle />
+          <div className="flex flex-wrap items-center">
+            <Badge icon={VscDebugBreakpointLog}>{ user?.credits }</Badge>
+          </div>
           <Dropdown
             arrowIcon={false}
             inline

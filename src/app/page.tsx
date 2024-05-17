@@ -42,6 +42,7 @@ export default function Home () {
     setToken(null)
     setIsLoggedIn(false)
     localStorage.removeItem('token')
+    localStorage.removeItem('user')
     return router.push('/')
   }
   return (

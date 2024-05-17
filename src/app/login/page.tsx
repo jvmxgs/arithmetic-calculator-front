@@ -35,11 +35,13 @@ export default function () {
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token)
+        localStorage.setItem('user', JSON.stringify(response.data.user))
         return router.replace('/dashboard')
       }
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 401) {
         localStorage.removeItem('token')
+        localStorage.removeItem('user')
         setShowToast(true)
         setToastMessage(error.response.data.message)
       }
