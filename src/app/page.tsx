@@ -2,6 +2,7 @@
 import {
   Avatar,
   Button,
+  DarkThemeToggle,
   Dropdown,
   DropdownDivider,
   DropdownHeader,
@@ -10,22 +11,38 @@ import {
   NavbarBrand,
   NavbarCollapse,
   NavbarLink,
-  NavbarToggle,
-  DarkThemeToggle
+  NavbarToggle
 } from 'flowbite-react'
+import Image from 'next/image'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
 import { AppFooter } from './components/AppFooter'
 import { PricingCard } from './components/PricingCard'
 import { PricingCardItem } from './components/PricingCardItem'
-import Image from 'next/image'
 
 export default function Home () {
   const router = useRouter()
+  const [isLoggedIn, setIsLoggedIn] = useState(false)
+  const [token, setToken] = useState<null | string>(null)
 
-  const isLoggedIn = true
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('token')
+      setToken(storedToken)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (token !== null) {
+      setIsLoggedIn(true)
+    }
+  }, [token])
 
   const handleSignOut = () => {
-    router.push('/')
+    setToken(null)
+    setIsLoggedIn(false)
+    localStorage.removeItem('token')
+    return router.push('/')
   }
   return (
     <main className="min-h-screen">

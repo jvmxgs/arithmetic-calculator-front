@@ -14,17 +14,28 @@ export default function () {
   const [password, setPassword] = useState('')
   const [showToast, setShowToast] = useState(false)
   const [toastMessage, setToastMessage] = useState('')
+  const [isProcessingLogin, setiIsProcessingLogin] = useState(false)
+  let token: string | null = null
+
+  if (typeof window !== 'undefined') {
+    token = localStorage.getItem('token')
+  }
+
+  if (token !== null) {
+    return router.push('/dashboard')
+  }
 
   const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     setShowToast(false)
+    setiIsProcessingLogin(true)
 
     try {
       const response = await axios.post('/login', { email, password })
 
       if (response.status === 200) {
         localStorage.setItem('token', response.data.token)
-        router.push('/dashboard')
+        return router.replace('/dashboard')
       }
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 401) {
@@ -33,10 +44,11 @@ export default function () {
         setToastMessage(error.response.data.message)
       }
     }
+    setiIsProcessingLogin(false)
   }
 
   return (
-    <article className='flex flex-col h-screen justify-center items-center gap-2'>
+    <article className='dark:bg-gray-900 flex flex-col h-screen justify-center items-center gap-2'>
       <Link href='/'>
         <Image
           src="/logo.png"
@@ -87,7 +99,7 @@ export default function () {
             <Checkbox id="remember" />
             <Label htmlFor="remember">Remember me</Label>
           </div>
-          <Button type="submit">Submit</Button>
+          <Button type="submit" isProcessing={isProcessingLogin}>Submit</Button>
         </form>
         <p className='text-sm'>
           Don't have an account?&nbsp;

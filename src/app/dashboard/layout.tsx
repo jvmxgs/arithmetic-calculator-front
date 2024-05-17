@@ -22,23 +22,27 @@ export default function DashboardLayout ({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  let collapsed: boolean = false
-  let token: string | null
-
-  if (typeof window !== 'undefined') {
-    collapsed = localStorage.getItem('sidebar-collapsed') === 'yes'
-    token = localStorage.getItem('token')
-
-    console.trace()
-  }
+  const [token, setToken] = useState<null | string | undefined>(undefined)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
   useEffect(() => {
-    if (!token) {
-      router.push('/login')
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('token')
+      const collapsed = localStorage.getItem('sidebar-collapsed') === 'yes'
+      setToken(storedToken)
+      setSidebarCollapsed(collapsed)
     }
   }, [])
 
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(collapsed)
+  useEffect(() => {
+    if (token === undefined) {
+      return
+    }
+
+    if (token === null) {
+      router.push('/login')
+    }
+  }, [token, router])
 
   const handleClose = () => {
     setSidebarCollapsed(!sidebarCollapsed)
@@ -53,7 +57,7 @@ export default function DashboardLayout ({
 
   const handleSignOut = () => {
     localStorage.removeItem('token')
-    router.push('/')
+    return router.push('/')
   }
 
   return (
@@ -61,7 +65,7 @@ export default function DashboardLayout ({
       <Navbar fluid>
         <div className='flex gap-4'>
           <HiMenu className="h-8 w-8 cursor-pointer text-gray-500" onClick={handleClose} />
-          <NavbarBrand href="/">
+          <NavbarBrand href="/dashboard">
             <img src="/logo.png" className="mr-3 h-6 sm:h-9" alt="Arithmetic Calculator Logo" />
           </NavbarBrand>
         </div>

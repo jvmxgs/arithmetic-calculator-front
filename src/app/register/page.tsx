@@ -1,9 +1,9 @@
 'use client'
 import { Button, Card, Checkbox, Label, TextInput } from 'flowbite-react'
+import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/navigation'
-import { useState, FormEvent } from 'react'
-import Image from 'next/image'
+import { FormEvent, useEffect, useState } from 'react'
 
 export default function () {
   const router = useRouter()
@@ -12,6 +12,24 @@ export default function () {
   const [lastName, setLastName] = useState('')
   const [password, setPassword] = useState('')
   const [repeatPassword, setRepeatPassword] = useState('')
+  const [token, setToken] = useState<null | string | undefined>(undefined)
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedToken = localStorage.getItem('token')
+      setToken(storedToken)
+    }
+  }, [])
+
+  useEffect(() => {
+    if (token === undefined) {
+      return
+    }
+
+    if (token !== null) {
+      router.push('/dashboard')
+    }
+  }, [token, router])
 
   const handleRegister = (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
@@ -25,7 +43,7 @@ export default function () {
   }
 
   return (
-    <article className='flex flex-col h-screen justify-center items-center gap-2'>
+    <article className='dark:bg-gray-900 flex flex-col h-screen justify-center items-center gap-2'>
       <Link href='/'>
         <Image
           src="/logo.png"
