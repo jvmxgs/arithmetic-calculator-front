@@ -1,19 +1,38 @@
 'use client'
+import { AxiosError } from 'axios'
+import { Button, Card, Checkbox, Label, TextInput, Toast } from 'flowbite-react'
 import Image from 'next/image'
-import { Button, Card, Checkbox, Label, TextInput } from 'flowbite-react'
-import { useState, FormEvent } from 'react'
-import { useRouter } from 'next/navigation'
 import Link from 'next/link'
+import { useRouter } from 'next/navigation'
+import { FormEvent, useState } from 'react'
+import { HiX } from 'react-icons/hi'
+import axios from '../utils/axiosConfig'
 
 export default function () {
   const router = useRouter()
-  const [username, setUsername] = useState('')
+  const [email, setEmail] = useState('')
   const [password, setPassword] = useState('')
+  const [showToast, setShowToast] = useState(false)
+  const [toastMessage, setToastMessage] = useState('')
 
-  const handleLogin = (e: FormEvent<HTMLFormElement>) => {
+  const handleLogin = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    localStorage.setItem('token', 'blabla')
-    router.push('/dashboard')
+    setShowToast(false)
+
+    try {
+      const response = await axios.post('/login', { email, password })
+
+      if (response.status === 200) {
+        localStorage.setItem('token', response.data.token)
+        router.push('/dashboard')
+      }
+    } catch (error) {
+      if (error instanceof AxiosError && error.response?.status === 401) {
+        localStorage.removeItem('token')
+        setShowToast(true)
+        setToastMessage(error.response.data.message)
+      }
+    }
   }
 
   return (
@@ -30,6 +49,15 @@ export default function () {
       </Link>
       <Card>
       <h3 className='text-center text-2xl font-bold tracking-tight text-gray-900 dark:text-white'>Login</h3>
+        {showToast && (
+          <Toast>
+            <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
+              <HiX className="h-5 w-5" />
+            </div>
+            <div className="ml-3 text-sm font-normal">{ toastMessage }</div>
+            <Toast.Toggle />
+          </Toast>
+        )}
         <form className="flex flex-col gap-4" onSubmit={handleLogin}>
           <div>
             <div className="mb-2 block">
@@ -39,8 +67,8 @@ export default function () {
               id="email1"
               type="email"
               placeholder="name@example.com"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
               required
             />
           </div>

@@ -1,20 +1,20 @@
 'use client'
 import {
   Avatar,
+  DarkThemeToggle,
   Dropdown,
   DropdownDivider,
   DropdownHeader,
   DropdownItem,
   Navbar,
   NavbarBrand,
-  DarkThemeToggle,
   Sidebar
 } from 'flowbite-react'
-import { SidebarCta } from './components/SidebarCta'
-import { HiPlus, HiMinus, HiChartPie, HiViewList, HiMenu } from 'react-icons/hi'
-import { FaDivide, FaAsterisk, FaSquareRootVariable } from 'react-icons/fa6'
-import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
+import { useEffect, useState } from 'react'
+import { FaAsterisk, FaDivide, FaSquareRootVariable } from 'react-icons/fa6'
+import { HiChartPie, HiMenu, HiMinus, HiPlus, HiViewList } from 'react-icons/hi'
+import { SidebarCta } from './components/SidebarCta'
 
 export default function DashboardLayout ({
   children
@@ -22,18 +22,28 @@ export default function DashboardLayout ({
   children: React.ReactNode
 }) {
   const router = useRouter()
-  const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [isCollapsed, setIsCollapsed] = useState(sidebarCollapsed)
+  let collapsed: boolean = false
+  let token: string | null
+
+  if (typeof window !== 'undefined') {
+    collapsed = localStorage.getItem('sidebar-collapsed') === 'yes'
+    token = localStorage.getItem('token')
+
+    console.trace()
+  }
 
   useEffect(() => {
-    const collapsed = localStorage.getItem('sidebar-collapsed') === 'yes'
-    setSidebarCollapsed(collapsed)
+    if (!token) {
+      router.push('/login')
+    }
   }, [])
 
-  const handleClose = () => {
-    setIsCollapsed(!isCollapsed)
+  const [sidebarCollapsed, setSidebarCollapsed] = useState(collapsed)
 
-    if (isCollapsed) {
+  const handleClose = () => {
+    setSidebarCollapsed(!sidebarCollapsed)
+
+    if (sidebarCollapsed) {
       localStorage.removeItem('sidebar-collapsed')
       return
     }
@@ -42,6 +52,7 @@ export default function DashboardLayout ({
   }
 
   const handleSignOut = () => {
+    localStorage.removeItem('token')
     router.push('/')
   }
 
@@ -74,7 +85,7 @@ export default function DashboardLayout ({
         </div>
       </Navbar>
       <section className='flex-grow flex overflow-hidden dark:bg-gray-900'>
-        <Sidebar collapsed={isCollapsed} collapseBehavior='collapse' className='flex'>
+        <Sidebar collapsed={sidebarCollapsed} collapseBehavior='collapse' className='flex'>
           <Sidebar.Items>
             <Sidebar.ItemGroup>
               <Sidebar.Item href="/dashboard" icon={HiChartPie}>
