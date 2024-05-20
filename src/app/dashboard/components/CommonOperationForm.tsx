@@ -5,7 +5,7 @@ import {
   TextInput
 } from 'flowbite-react'
 import { motion, useAnimation } from 'framer-motion'
-import { FormEvent, useState } from 'react'
+import { FormEvent, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
 import { FaEquals, FaPlus } from 'react-icons/fa6'
 import { UpgradeModal } from '../components/UpgradeModal'
@@ -13,17 +13,20 @@ import { UpgradeModal } from '../components/UpgradeModal'
 export const CommonOperationForm = ({
   handleNumbers,
   icon,
+  errors,
   multiple,
   single
 } : {
-  handleNumbers: (firstNumber: number, secondNumber: number) => Promise<string>
+  handleNumbers: (firstNumber: string, secondNumber: string) => Promise<string>
   icon: IconType,
+  errors: { [key: string]: string },
   multiple?: boolean,
   single?: boolean
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [firstNumber, setFirstNumber] = useState('')
   const [secondNumber, setSecondNumber] = useState('')
+  const [inputErrors, setInputErrors] = useState<{ [key: string]: string }>({})
   const [result, setResult] = useState('')
   const controls = useAnimation()
 
@@ -35,10 +38,18 @@ export const CommonOperationForm = ({
     setIsModalOpen(true)
   }
 
+  useEffect(() => {
+    const newErrors: { [key: string]: string } = {}
+    Object.values(errors).forEach((error) => {
+      newErrors[error.path] = error.msg
+    })
+    setInputErrors(newErrors)
+  }, [errors])
+
   const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
     await controls.start({ scale: 0.95 })
-    const res = await handleNumbers(parseInt(firstNumber), parseInt(secondNumber))
+    const res = await handleNumbers(firstNumber, secondNumber)
     setResult(res)
     await controls.start({ scale: 1.05 })
     await controls.start({ scale: 1 })
@@ -50,18 +61,28 @@ export const CommonOperationForm = ({
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <TextInput
-              type="number"
+              type="string"
               placeholder="Enter your first number"
               required
               shadow
               sizing='lg'
               value={firstNumber}
               onChange={(e) => setFirstNumber(e.target.value)}
+              color={inputErrors.first_number ? 'failure' : 'gray'}
+              helperText = {
+                inputErrors.first_number
+                  ? (
+                      <span className="font-medium text-red-500">{inputErrors.first_number}</span>
+                    )
+                  : (
+                      <></>
+                    )
+              }
             />
           </div>
           {!single && <div>
             <TextInput
-              type="number"
+              type="string"
               placeholder="Enter your second number"
               icon={icon}
               required={!single}
@@ -69,6 +90,16 @@ export const CommonOperationForm = ({
               sizing='lg'
               value={secondNumber}
               onChange={(e) => setSecondNumber(e.target.value)}
+              color={inputErrors.second_number ? 'failure' : 'gray'}
+              helperText = {
+                inputErrors.second_number
+                  ? (
+                      <span className="font-medium text-red-500">{inputErrors.second_number}</span>
+                    )
+                  : (
+                      <></>
+                    )
+              }
             />
           </div>}
           { multiple && <Button type="button" size='md' outline onClick={handleOpenModal}><FaPlus className="mr-2 h-5 w-5" />Add number</Button> }

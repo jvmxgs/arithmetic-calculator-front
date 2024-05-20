@@ -37,8 +37,6 @@ export default function () {
         const token = response.data.data.token ?? null
         const user = response.data.data.user ?? null
 
-        console.log({ token, user })
-
         if (token !== null && user !== null) {
           localStorage.setItem('token', response.data.data.token)
           localStorage.setItem('user', JSON.stringify(response.data.data.user))

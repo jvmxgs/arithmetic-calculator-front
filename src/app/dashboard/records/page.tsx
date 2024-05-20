@@ -13,8 +13,6 @@ export default function () {
   const handleSubmit = async (): Promise<void> => {
     const result = await get(context.token, '/records')
 
-    console.log(result.user)
-
     updateUserContext(result.user, context)
 
     setRecords(result.records)

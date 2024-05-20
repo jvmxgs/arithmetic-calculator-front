@@ -14,9 +14,7 @@ export async function post (token: string, url: string, payload: object) {
 
     return response.data.data
   } catch (e) {
-    return {
-      result: 'Something went wrong'
-    }
+    return e.response.data
   }
 }
 

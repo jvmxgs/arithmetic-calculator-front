@@ -8,7 +8,6 @@ interface WithAuthProps {
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const WithAuthComponent = (props: P & WithAuthProps) => {
-    console.log('Loaded withAuth - - - - - - - - - -')
     const router = useRouter()
     const { user, setUser, setToken } = useAppContext()
 
@@ -18,7 +17,6 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
       if (!storedToken) {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
-        console.log('No token')
         router.replace('/login')
         return
       }

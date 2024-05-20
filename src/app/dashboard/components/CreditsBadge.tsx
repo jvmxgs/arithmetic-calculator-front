@@ -5,7 +5,6 @@ import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import { useAppContext } from '../../../context/AppContext'
 
 export const CreditsBadge = () => {
-  console.log('Loaded CreditsBadge')
   const [counter, setCounter] = useState(0)
 
   const { user } = useAppContext()

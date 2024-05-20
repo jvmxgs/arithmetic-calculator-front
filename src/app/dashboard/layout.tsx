@@ -22,10 +22,8 @@ interface ProtectedLayoutProps {
 }
 
 const DashboardLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
-  console.log('Loaded layout dashboard - - - - - - - - - - - - - - - - - - - -')
   const router = useRouter()
   const { user } = useAppContext()
-  console.log(user)
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
 
