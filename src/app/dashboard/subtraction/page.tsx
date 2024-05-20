@@ -19,6 +19,13 @@ export default function () {
       second_number: secondNumber
     })
 
+    /* if (e.response.data.message === 'Invalid token') {
+      localStorage.removeItem('token')
+      localStorage.removeItem('user')
+      const router = useRouter()
+      router.push('/login')
+    } */
+
     if (result.message === 'Insuficient credits!') {
       context.setShowBuyCoins(true)
       return ' - '

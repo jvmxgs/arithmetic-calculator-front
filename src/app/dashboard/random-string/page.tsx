@@ -1,10 +1,11 @@
 'use client'
 import { updateUserContext } from '@/app/utils/updateContext'
 import { useAppContext } from '@/context/AppContext'
-import { Breadcrumb, Button, Card } from 'flowbite-react'
+import { Breadcrumb, Button, Card, Toast, ToastToggle } from 'flowbite-react'
 import { motion, useAnimation } from 'framer-motion'
 import { FormEvent, useState } from 'react'
 import { HiHome } from 'react-icons/hi'
+import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import { post } from '../../services/service'
 
 export default function () {
@@ -24,6 +25,10 @@ export default function () {
     updateUserContext(result.user, context)
 
     setResult(result.result)
+  }
+
+  const handleBuyCoins = () => {
+    context.setShowBuyCoins(false)
   }
 
   return (
@@ -54,6 +59,28 @@ export default function () {
         </motion.div>
       </div>
     </article>
+    {context.showBuyCoins && <Toast className='absolute top-6 right-6'>
+        <div className="flex items-start">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-500 dark:bg-cyan-900 dark:text-cyan-300">
+            <VscDebugBreakpointLog className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">
+            <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">Buy more credits</span>
+            <div className="mb-2 text-sm font-normal">You don't have enough credits</div>
+            <div className="flex gap-2">
+              <div className="w-auto">
+                <Button size="xs">Buy more</Button>
+              </div>
+              <div className="w-auto">
+                <Button color="light" size="xs" onClick={handleBuyCoins}>
+                  Not now
+                </Button>
+              </div>
+            </div>
+          </div>
+          <ToastToggle onDismiss={() => context.setShowBuyCoins(false)} />
+        </div>
+      </Toast>}
     </main>
   )
 }
