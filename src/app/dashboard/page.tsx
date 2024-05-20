@@ -1,10 +1,10 @@
 'use client'
 import { Card } from 'flowbite-react'
 import { motion } from 'framer-motion'
+import { useAppContext } from '../../context/AppContext'
 
-const Dashboard: React.FC = (user) => {
-  console.log('dashboard + + + + + ')
-  console.log(user)
+const Dashboard: React.FC = () => {
+  const { user } = useAppContext()
   return (
     <main>
       <motion.div
@@ -22,7 +22,7 @@ const Dashboard: React.FC = (user) => {
                   <div className="min-w-0 flex-1">
                     <p className="truncate text-sm font-medium text-gray-900 dark:text-white">Credits</p>
                   </div>
-                  <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">fsad</div>
+                  <div className="inline-flex items-center text-base font-semibold text-gray-900 dark:text-white">{ user?.credits }</div>
                 </div>
               </li>
             </ul>

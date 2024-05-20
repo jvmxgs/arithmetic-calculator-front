@@ -2,11 +2,13 @@ import { Badge } from 'flowbite-react'
 import { motion } from 'framer-motion'
 import { useState } from 'react'
 import { VscDebugBreakpointLog } from 'react-icons/vsc'
+import { useAppContext } from '../../../context/AppContext'
 
-export const CreditsBadge = ({ credits }: {credits: string}) => {
+export const CreditsBadge = () => {
   console.log('Loaded CreditsBadge')
-  console.log(credits)
   const [counter, setCounter] = useState(0)
+
+  const { user } = useAppContext()
 
   const handleCounter = () => {
     setCounter(counter + 1)
@@ -23,7 +25,7 @@ export const CreditsBadge = ({ credits }: {credits: string}) => {
       className="flex flex-wrap items-center cursor-pointer select-none"
       onClick={handleCounter}
     >
-      <Badge icon={VscDebugBreakpointLog}>{ credits }</Badge>
+      <Badge icon={VscDebugBreakpointLog}>{ user?.credits }</Badge>
     </motion.div>
   )
 }

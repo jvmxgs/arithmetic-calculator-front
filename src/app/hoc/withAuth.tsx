@@ -1,26 +1,21 @@
+import { useAppContext } from '@/context/AppContext'
 import { Spinner } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import { ComponentType, useEffect, useState } from 'react'
+import { ComponentType, useEffect } from 'react'
 
 interface WithAuthProps {
-  user: {
-    credits: string,
-    first_name: string,
-    last_name: string,
-    email: string
-  },
-  token: string
 }
 
 const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
   const WithAuthComponent = (props: P & WithAuthProps) => {
+    console.log('Loaded withAuth - - - - - - - - - -')
     const router = useRouter()
-    const [user, setUser] = useState(null)
+    const { user, setUser, setToken } = useAppContext()
 
     useEffect(() => {
-      const token = localStorage.getItem('token')
+      const storedToken = localStorage.getItem('token')
 
-      if (!token) {
+      if (!storedToken) {
         localStorage.removeItem('token')
         localStorage.removeItem('user')
         console.log('No token')
@@ -30,7 +25,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
 
       const storedUser = JSON.parse(localStorage.getItem('user') ?? '{}')
       setUser(storedUser)
-      console.log(user)
+      setToken(storedToken)
     }, [])
 
     if (user === null) {
@@ -41,7 +36,7 @@ const withAuth = <P extends object>(WrappedComponent: ComponentType<P>) => {
       )
     }
 
-    return <WrappedComponent {...props} user={ user } />
+    return <WrappedComponent {...props} />
   }
 
   return WithAuthComponent

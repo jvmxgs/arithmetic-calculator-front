@@ -1,4 +1,5 @@
 'use client'
+import { useAppContext } from '@/context/AppContext'
 import {
   Avatar,
   DarkThemeToggle,
@@ -18,12 +19,12 @@ import { CreditsBadge } from './components/CreditsBadge'
 
 interface ProtectedLayoutProps {
   children: React.ReactNode
-  user: { first_name: string, last_name: string, email: string, credits: string }
 }
 
-const DashboardLayout: React.FC<ProtectedLayoutProps> = ({ children, user }) => {
+const DashboardLayout: React.FC<ProtectedLayoutProps> = ({ children }) => {
   console.log('Loaded layout dashboard - - - - - - - - - - - - - - - - - - - -')
   const router = useRouter()
+  const { user } = useAppContext()
   console.log(user)
 
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
@@ -49,7 +50,7 @@ const DashboardLayout: React.FC<ProtectedLayoutProps> = ({ children, user }) => 
         </div>
         <div className="flex md:order-2 gap-4">
           <DarkThemeToggle />
-          <CreditsBadge credits={ user.credits ?? 0 } />
+          <CreditsBadge />
           <Dropdown
             arrowIcon={false}
             inline
@@ -58,8 +59,8 @@ const DashboardLayout: React.FC<ProtectedLayoutProps> = ({ children, user }) => 
             }
           >
             <DropdownHeader>
-              <span className="block text-sm">{ `${user.first_name} ${user.last_name}` }</span>
-              <span className="block truncate text-sm font-medium">{ user.email }</span>
+              <span className="block text-sm">{ `${user?.first_name} ${user?.last_name}` }</span>
+              <span className="block truncate text-sm font-medium">{ user?.email }</span>
             </DropdownHeader>
             <DropdownItem>Settings</DropdownItem>
             <DropdownDivider />
