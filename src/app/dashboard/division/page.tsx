@@ -30,7 +30,7 @@ export default function () {
         <Breadcrumb.Item href="/dashboard/division">Division</Breadcrumb.Item>
       </Breadcrumb>
       <h3 className='text-3xl font-semibold text-gray-900'>Division</h3>
-      <CommonOperationForm handleNumbers={handleNumbers} icon={FaDivide} title='Division' />
+      <CommonOperationForm handleNumbers={handleNumbers} icon={FaDivide} />
     </main>
   )
 }

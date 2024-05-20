@@ -19,3 +19,22 @@ export async function post (token: string, url: string, payload: object) {
     }
   }
 }
+
+export async function get (token: string, url: string) {
+  try {
+    const response = await axios.get(
+      url,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`
+        }
+      }
+    )
+
+    return response.data.data
+  } catch (e) {
+    return {
+      result: 'Something went wrong'
+    }
+  }
+}

@@ -7,6 +7,7 @@ import { usePathname } from 'next/navigation'
 import { useEffect, useRef, useState } from 'react'
 import { FaAsterisk, FaDivide, FaSquareRootVariable } from 'react-icons/fa6'
 import { HiChartPie, HiMinus, HiPlus, HiViewList } from 'react-icons/hi'
+import { MdAbc } from 'react-icons/md'
 import { SidebarCta } from './SidebarCta'
 
 export default function AppSidebar ({
@@ -29,6 +30,7 @@ export default function AppSidebar ({
     { name: 'Multiplication', path: '/dashboard/multiplication', icon: FaAsterisk },
     { name: 'Division', path: '/dashboard/division', icon: FaDivide },
     { name: 'Square Root', path: '/dashboard/sqrt', icon: FaSquareRootVariable },
+    { name: 'Random String', path: '/dashboard/random-string', icon: MdAbc },
     { name: 'Records', path: '/dashboard/records', icon: HiViewList }
   ]
 

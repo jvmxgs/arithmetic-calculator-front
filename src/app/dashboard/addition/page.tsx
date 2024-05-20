@@ -30,7 +30,7 @@ export default function () {
         <Breadcrumb.Item href="/dashboard/addition">Addition</Breadcrumb.Item>
       </Breadcrumb>
       <h3 className='text-3xl font-semibold text-gray-900'>Addition</h3>
-      <CommonOperationForm handleNumbers={handleNumbers} icon={FaPlus} title='Addition' multiple />
+      <CommonOperationForm handleNumbers={handleNumbers} icon={FaPlus} multiple />
     </main>
   )
 }

@@ -1,23 +1,24 @@
 'use client'
-import { post } from '@/app/services/service'
 import { updateUserContext } from '@/app/utils/updateContext'
 import { useAppContext } from '@/context/AppContext'
-import { Breadcrumb } from 'flowbite-react'
-import { FaDivide } from 'react-icons/fa6'
+import { Breadcrumb, Button, Card } from 'flowbite-react'
+import { motion, useAnimation } from 'framer-motion'
+import { FormEvent, useState } from 'react'
 import { HiHome } from 'react-icons/hi'
-import { CommonOperationForm } from '../components/CommonOperationForm'
+import { post } from '../../services/service'
 
 export default function () {
+  const controls = useAnimation()
   const context = useAppContext()
+  const [result, setResult] = useState('')
 
-  const handleNumbers = async (firstNumber: number): Promise<string> => {
-    const result = await post(context.token, '/sqrt', {
-      first_number: firstNumber
-    })
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>): Promise<void> => {
+    e.preventDefault()
+    const result = await post(context.token, '/random-string', {})
 
     updateUserContext(result.user, context)
 
-    return result.result
+    setResult(result.result)
   }
 
   return (
@@ -26,10 +27,28 @@ export default function () {
         <Breadcrumb.Item href="/dashboard" icon={HiHome}>
           Home
         </Breadcrumb.Item>
-        <Breadcrumb.Item href="/dashboard/sqrt">Random string</Breadcrumb.Item>
+        <Breadcrumb.Item href="/dashboard/addition">Random string</Breadcrumb.Item>
       </Breadcrumb>
-      <h3 className='text-3xl font-semibold text-gray-900'>Random string</h3>
-      <CommonOperationForm handleNumbers={handleNumbers} icon={FaDivide} title='Random string' single />
+      <h3 className='text-3xl font-semibold text-gray-900 dark:text-gray-100 pb-8'>Random string</h3>
+      <article>
+      <div className='flex flex-col md:flex-row justify-center items-start gap-10'>
+        <form onSubmit={handleSubmit} className="flex flex-col gap-4">
+          <Button type="submit" size='xl'>Generate</Button>
+        </form>
+        <motion.div
+          animate={controls}
+          transition={{ duration: 0.1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 1.1 }}
+          className='w-full md:w-1/3'
+        >
+          <Card className='w-full'>
+            <h5 className="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">Result:</h5>
+            <h3 className="mb-4 text-2xl font-medium text-gray-800 dark:text-gray-400 min-w-40 text-center whitespace-nowrap text-overflow-ellipsis"> { result } </h3>
+          </Card>
+        </motion.div>
+      </div>
+    </article>
     </main>
   )
 }

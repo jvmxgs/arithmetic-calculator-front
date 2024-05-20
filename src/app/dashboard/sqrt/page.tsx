@@ -31,7 +31,7 @@ export default function () {
         <Breadcrumb.Item href="/dashboard/sqrt">Square root</Breadcrumb.Item>
       </Breadcrumb>
       <h3 className='text-3xl font-semibold text-gray-900'>Square root</h3>
-      <CommonOperationForm handleNumbers={handleNumbers} icon={FaDivide} title='Square root' single />
+      <CommonOperationForm handleNumbers={handleNumbers} icon={FaDivide} single />
     </main>
   )
 }

@@ -13,13 +13,11 @@ import { UpgradeModal } from '../components/UpgradeModal'
 export const CommonOperationForm = ({
   handleNumbers,
   icon,
-  title,
   multiple,
   single
 } : {
   handleNumbers: (firstNumber: number, secondNumber: number) => Promise<string>
   icon: IconType,
-  title: string,
   multiple?: boolean,
   single?: boolean
 }) => {
@@ -49,7 +47,6 @@ export const CommonOperationForm = ({
   return (
     <article>
       <div className='flex flex-col md:flex-row justify-center items-start gap-10'>
-        <h3>{ title }</h3>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <TextInput
