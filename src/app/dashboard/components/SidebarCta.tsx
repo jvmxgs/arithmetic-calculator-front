@@ -33,7 +33,7 @@ export const SidebarCta = () => {
       </div>
       <a
         className="text-sm text-cyan-900 underline hover:text-cyan-800 dark:text-gray-400 dark:hover:text-gray-300"
-        href="#"
+        href="mailto:jvmxgs@gmail.com"
       >
         Contact me!
       </a>

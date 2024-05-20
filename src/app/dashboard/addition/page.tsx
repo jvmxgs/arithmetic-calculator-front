@@ -1,13 +1,31 @@
 'use client'
 import { Breadcrumb } from 'flowbite-react'
-import { HiHome } from 'react-icons/hi'
-import { CommonOperationForm } from '../components/CommonOperationForm'
 import { FaPlus } from 'react-icons/fa'
+import { HiHome } from 'react-icons/hi'
+import axios from '../../utils/axiosConfig'
+import { CommonOperationForm } from '../components/CommonOperationForm'
 
 export default function () {
-  const handleNumbers = (firstNumber: number, secondNumber: number) => {
-    console.log(firstNumber)
-    console.log(secondNumber)
+  const handleNumbers = async (firstNumber: number, secondNumber: number): Promise<string> => {
+    try {
+      const token = localStorage.getItem('token') ?? ''
+      const response = await axios.post(
+        '/addition',
+        {
+          first_number: firstNumber,
+          second_number: secondNumber
+        },
+        {
+          headers: {
+            Authorization: `Bearer ${token}`
+          }
+        }
+      )
+
+      return response.data.data.result
+    } catch (e) {
+      return 'Something went wrong'
+    }
   }
 
   return (

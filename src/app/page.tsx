@@ -14,6 +14,7 @@ import {
   NavbarToggle
 } from 'flowbite-react'
 import Image from 'next/image'
+import Link from 'next/link'
 import { useRouter } from 'next/navigation'
 import { useEffect, useState } from 'react'
 import { AppFooter } from './components/AppFooter'
@@ -75,8 +76,8 @@ export default function Home () {
               )
             : (
                 <div className='flex gap-2'>
-                  <Button href='/login'>Login</Button>
-                  <Button href='/register' outline>Sign up</Button>
+                  <Button as={Link} href='/login'>Login</Button>
+                  <Button as={Link} href='/register' outline>Sign up</Button>
                 </div>
               )
           }

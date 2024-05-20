@@ -34,9 +34,17 @@ export default function () {
       const response = await axios.post('/login', { email, password })
 
       if (response.status === 200) {
-        localStorage.setItem('token', response.data.token)
-        localStorage.setItem('user', JSON.stringify(response.data.user))
-        return router.replace('/dashboard')
+        const token = response.data.data.token ?? null
+        const user = response.data.data.user ?? null
+
+        console.log({ token, user })
+
+        if (token !== null && user !== null) {
+          localStorage.setItem('token', response.data.data.token)
+          localStorage.setItem('user', JSON.stringify(response.data.data.user))
+        }
+
+        return router.push('/dashboard')
       }
     } catch (error) {
       if (error instanceof AxiosError && error.response?.status === 401) {

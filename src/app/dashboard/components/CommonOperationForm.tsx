@@ -1,26 +1,29 @@
 'use client'
 import {
-  TextInput,
   Button,
-  Card
+  Card,
+  TextInput
 } from 'flowbite-react'
-import { UpgradeModal } from '../components/UpgradeModal'
-import { FaEquals, FaPlus } from 'react-icons/fa6'
-import { useState, FormEvent } from 'react'
+import { motion, useAnimation } from 'framer-motion'
+import { FormEvent, useState } from 'react'
 import { IconType } from 'react-icons'
+import { FaEquals, FaPlus } from 'react-icons/fa6'
+import { UpgradeModal } from '../components/UpgradeModal'
 
 export const CommonOperationForm = ({
   handleNumbers,
   icon,
   multiple
 } : {
-  handleNumbers: (firstNumber: number, secondNumber: number) => void
+  handleNumbers: (firstNumber: number, secondNumber: number) => Promise<string>
   icon: IconType,
   multiple?: boolean
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [firstNumber, setFirstNumber] = useState('')
   const [secondNumber, setSecondNumber] = useState('')
+  const [result, setResult] = useState('')
+  const controls = useAnimation()
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
@@ -30,9 +33,13 @@ export const CommonOperationForm = ({
     setIsModalOpen(true)
   }
 
-  const handleSubmit = (e: FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: FormEvent<HTMLFormElement>) => {
     e.preventDefault()
-    handleNumbers(parseInt(firstNumber), parseInt(secondNumber))
+    await controls.start({ scale: 0.95 })
+    const res = await handleNumbers(parseInt(firstNumber), parseInt(secondNumber))
+    setResult(res)
+    await controls.start({ scale: 1.05 })
+    await controls.start({ scale: 1 })
   }
 
   return (
@@ -65,10 +72,18 @@ export const CommonOperationForm = ({
           { multiple && <Button type="button" size='md' outline onClick={handleOpenModal}><FaPlus className="mr-2 h-5 w-5" />Add number</Button> }
           <Button type="submit" size='xl'><FaEquals /></Button>
         </form>
-        <Card className='w-full md:w-1/3'>
-          <h5 className="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">Result:</h5>
-          <h3 className="mb-4 text-4xl font-medium text-gray-800 dark:text-gray-400 min-w-40 text-center"> - </h3>
-        </Card>
+        <motion.div
+          animate={controls}
+          transition={{ duration: 0.1 }}
+          whileHover={{ scale: 1.05 }}
+          whileTap={{ scale: 1.1 }}
+          className='w-full md:w-1/3'
+        >
+          <Card className='w-full'>
+            <h5 className="mb-4 text-xl font-medium text-gray-500 dark:text-gray-400">Result:</h5>
+            <h3 className="mb-4 text-4xl font-medium text-gray-800 dark:text-gray-400 min-w-40 text-center text-balance"> { result } </h3>
+          </Card>
+        </motion.div>
       </div>
       <UpgradeModal open={isModalOpen} onClose={handleCloseModal} />
     </article>

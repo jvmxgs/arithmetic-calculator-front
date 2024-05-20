@@ -1,63 +1,35 @@
 'use client'
 import {
   Avatar,
-  Badge,
   DarkThemeToggle,
   Dropdown,
   DropdownDivider,
   DropdownHeader,
   DropdownItem,
   Navbar,
-  NavbarBrand,
-  Sidebar
+  NavbarBrand
 } from 'flowbite-react'
 import { useRouter } from 'next/navigation'
-import { useEffect, useState } from 'react'
-import { FaAsterisk, FaDivide, FaSquareRootVariable } from 'react-icons/fa6'
-import { HiChartPie, HiMenu, HiMinus, HiPlus, HiViewList } from 'react-icons/hi'
-import { VscDebugBreakpointLog } from 'react-icons/vsc'
-import { SidebarCta } from './components/SidebarCta'
+import React, { useState } from 'react'
+import { HiMenu } from 'react-icons/hi'
+import withAuth from '../hoc/withAuth'
+import AppSidebar from './components/AppSidebar'
+import { CreditsBadge } from './components/CreditsBadge'
 
-export default function DashboardLayout ({
-  children
-}: {
+interface ProtectedLayoutProps {
   children: React.ReactNode
-}) {
+  user: { first_name: string, last_name: string, email: string, credits: string }
+}
+
+const DashboardLayout: React.FC<ProtectedLayoutProps> = ({ children, user }) => {
+  console.log('Loaded layout dashboard - - - - - - - - - - - - - - - - - - - -')
   const router = useRouter()
-  const [token, setToken] = useState<null | string | undefined>(undefined)
+  console.log(user)
+
   const [sidebarCollapsed, setSidebarCollapsed] = useState(false)
-  const [user, setUser] = useState({})
-
-  useEffect(() => {
-    if (typeof window !== 'undefined') {
-      const storedToken = localStorage.getItem('token')
-      const collapsed = localStorage.getItem('sidebar-collapsed') === 'yes'
-      const user = JSON.parse(localStorage.getItem('user') ?? '{}')
-      setToken(storedToken)
-      setSidebarCollapsed(collapsed)
-      setUser(user)
-    }
-  }, [])
-
-  useEffect(() => {
-    if (token === undefined) {
-      return
-    }
-
-    if (token === null) {
-      router.push('/login')
-    }
-  }, [token, router])
 
   const handleClose = () => {
     setSidebarCollapsed(!sidebarCollapsed)
-
-    if (sidebarCollapsed) {
-      localStorage.removeItem('sidebar-collapsed')
-      return
-    }
-
-    localStorage.setItem('sidebar-collapsed', 'yes')
   }
 
   const handleSignOut = () => {
@@ -77,9 +49,7 @@ export default function DashboardLayout ({
         </div>
         <div className="flex md:order-2 gap-4">
           <DarkThemeToggle />
-          <div className="flex flex-wrap items-center">
-            <Badge icon={VscDebugBreakpointLog}>{ user?.credits }</Badge>
-          </div>
+          <CreditsBadge credits={ user.credits ?? 0 } />
           <Dropdown
             arrowIcon={false}
             inline
@@ -88,8 +58,8 @@ export default function DashboardLayout ({
             }
           >
             <DropdownHeader>
-              <span className="block text-sm">Bonnie Green</span>
-              <span className="block truncate text-sm font-medium">name@example.com</span>
+              <span className="block text-sm">{ `${user.first_name} ${user.last_name}` }</span>
+              <span className="block truncate text-sm font-medium">{ user.email }</span>
             </DropdownHeader>
             <DropdownItem>Settings</DropdownItem>
             <DropdownDivider />
@@ -98,34 +68,7 @@ export default function DashboardLayout ({
         </div>
       </Navbar>
       <section className='flex-grow flex overflow-hidden dark:bg-gray-900'>
-        <Sidebar collapsed={sidebarCollapsed} collapseBehavior='collapse' className='flex'>
-          <Sidebar.Items>
-            <Sidebar.ItemGroup>
-              <Sidebar.Item href="/dashboard" icon={HiChartPie}>
-                Dashboard
-              </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/addition" icon={HiPlus}>
-                Addition
-              </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/subtraction" icon={HiMinus}>
-                Subtraction
-              </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/multiplication" icon={FaAsterisk}>
-                Multiplication
-              </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/division" icon={FaDivide}>
-                Division
-              </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/square-root" icon={FaSquareRootVariable}>
-                Square Root
-              </Sidebar.Item>
-              <Sidebar.Item href="/dashboard/records" icon={HiViewList}>
-                Records
-              </Sidebar.Item>
-            </Sidebar.ItemGroup>
-          </Sidebar.Items>
-          <SidebarCta />
-        </Sidebar>
+        <AppSidebar collapsed={sidebarCollapsed} />
         <article className='overflow-y-auto w-full'>
           <section className='m-4 p-8 rounded-md shadow-none dark:text-white'>
             {children}
@@ -135,3 +78,5 @@ export default function DashboardLayout ({
     </main>
   )
 }
+
+export default withAuth(DashboardLayout)
