@@ -44,10 +44,14 @@ export default function () {
               {records.map((item, index) => (
                 <TableRow key={index} className="bg-white dark:border-gray-700 dark:bg-gray-800">
                   <TableCell className="whitespace-nowrap font-medium text-gray-900 dark:text-white">
+                    {/* @ts-expect-error operation type not defined */}
                     { item.operation.type }
                   </TableCell>
+                  {/* @ts-expect-error operation type not defined */}
                   <TableCell>{ item.operation?.cost }</TableCell>
+                  {/* @ts-expect-error operation type not defined */}
                   <TableCell>{ item.user_balance }</TableCell>
+                  {/* @ts-expect-error operation type not defined */}
                   <TableCell>{ item.operation_response }</TableCell>
                 </TableRow>
               ))}

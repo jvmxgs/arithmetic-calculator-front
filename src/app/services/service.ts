@@ -14,7 +14,8 @@ export async function post (token: string, url: string, payload: object) {
 
     return response.data.data
   } catch (e) {
-    return e.response.data
+    // @ts-expect-error e maybe is unknown
+    return e.response?.data
   }
 }
 

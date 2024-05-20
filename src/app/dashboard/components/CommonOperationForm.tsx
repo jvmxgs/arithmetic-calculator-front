@@ -46,7 +46,10 @@ export const CommonOperationForm = ({
   useEffect(() => {
     const newErrors: { [key: string]: string } = {}
     Object.values(errors).forEach((error) => {
-      newErrors[error.path] = error.msg
+      if (typeof error === 'object' && 'path' in error && 'msg' in error) {
+        // @ts-expect-error error type not defined
+        newErrors[error.path] = error.msg
+      }
     })
     setInputErrors(newErrors)
   }, [errors])

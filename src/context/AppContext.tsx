@@ -7,7 +7,7 @@ export interface AppContextProps {
   setToken: (user: string) => void
   user: User | null
   setUser: (user: User) => void
-  showBuyCoins: User | null
+  showBuyCoins: boolean
   setShowBuyCoins: (showBuyCoins: boolean) => void
 }
 
