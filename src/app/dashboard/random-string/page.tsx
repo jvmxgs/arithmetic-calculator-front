@@ -16,6 +16,11 @@ export default function () {
     e.preventDefault()
     const result = await post(context.token, '/random-string', {})
 
+    if (result.message === 'Insuficient credits!') {
+      context.setShowBuyCoins(true)
+      return
+    }
+
     updateUserContext(result.user, context)
 
     setResult(result.result)

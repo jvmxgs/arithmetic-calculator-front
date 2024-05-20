@@ -1,13 +1,17 @@
 'use client'
+import { useAppContext } from '@/context/AppContext'
 import {
   Button,
   Card,
-  TextInput
+  TextInput,
+  Toast,
+  ToastToggle
 } from 'flowbite-react'
 import { motion, useAnimation } from 'framer-motion'
 import { FormEvent, useEffect, useState } from 'react'
 import { IconType } from 'react-icons'
 import { FaEquals, FaPlus } from 'react-icons/fa6'
+import { VscDebugBreakpointLog } from 'react-icons/vsc'
 import { UpgradeModal } from '../components/UpgradeModal'
 
 export const CommonOperationForm = ({
@@ -29,6 +33,7 @@ export const CommonOperationForm = ({
   const [inputErrors, setInputErrors] = useState<{ [key: string]: string }>({})
   const [result, setResult] = useState('')
   const controls = useAnimation()
+  const context = useAppContext()
 
   const handleCloseModal = () => {
     setIsModalOpen(false)
@@ -53,6 +58,10 @@ export const CommonOperationForm = ({
     setResult(res)
     await controls.start({ scale: 1.05 })
     await controls.start({ scale: 1 })
+  }
+
+  const handleBuyCoins = () => {
+    context.setShowBuyCoins(false)
   }
 
   return (
@@ -119,6 +128,28 @@ export const CommonOperationForm = ({
         </motion.div>
       </div>
       <UpgradeModal open={isModalOpen} onClose={handleCloseModal} />
+      {context.showBuyCoins && <Toast className='absolute top-6 right-6'>
+        <div className="flex items-start">
+          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-cyan-100 text-cyan-500 dark:bg-cyan-900 dark:text-cyan-300">
+            <VscDebugBreakpointLog className="h-5 w-5" />
+          </div>
+          <div className="ml-3 text-sm font-normal">
+            <span className="mb-1 text-sm font-semibold text-gray-900 dark:text-white">Buy more credits</span>
+            <div className="mb-2 text-sm font-normal">You don't have enough credits</div>
+            <div className="flex gap-2">
+              <div className="w-auto">
+                <Button size="xs">Buy more</Button>
+              </div>
+              <div className="w-auto">
+                <Button color="light" size="xs" onClick={handleBuyCoins}>
+                  Not now
+                </Button>
+              </div>
+            </div>
+          </div>
+          <ToastToggle onDismiss={() => context.setShowBuyCoins(false)} />
+        </div>
+      </Toast>}
     </article>
   )
 }

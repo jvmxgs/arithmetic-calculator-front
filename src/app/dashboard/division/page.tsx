@@ -19,6 +19,11 @@ export default function () {
       second_number: secondNumber
     })
 
+    if (result.message === 'Insuficient credits!') {
+      context.setShowBuyCoins(true)
+      return ' - '
+    }
+
     if (result.errors) {
       setErrors(result.errors)
       return ' - '

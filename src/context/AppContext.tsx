@@ -7,6 +7,8 @@ export interface AppContextProps {
   setToken: (user: string) => void
   user: User | null
   setUser: (user: User) => void
+  showBuyCoins: User | null
+  setShowBuyCoins: (showBuyCoins: boolean) => void
 }
 
 const AppContext = createContext<AppContextProps | undefined>(undefined)
@@ -22,9 +24,10 @@ export const useAppContext = () => {
 export const AppProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<User | null>(null)
   const [token, setToken] = useState<string>('')
+  const [showBuyCoins, setShowBuyCoins] = useState(false)
 
   return (
-    <AppContext.Provider value={{ user, setUser, token, setToken }}>
+    <AppContext.Provider value={{ user, setUser, token, setToken, showBuyCoins, setShowBuyCoins }}>
       {children}
     </AppContext.Provider>
   )
