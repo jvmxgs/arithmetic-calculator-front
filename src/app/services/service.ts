@@ -12,8 +12,18 @@ export async function post (token: string, url: string, payload: object) {
       }
     )
 
-    return response.data.data
+    const newToken = response.headers.authorization?.split(' ')[1]
+
+    return {
+      data: response.data.data,
+      newToken
+    }
   } catch (e) {
-    return 'Something went wrong'
+    return {
+      data: {
+        result: 'Something went wrong'
+      },
+      newToken: null
+    }
   }
 }

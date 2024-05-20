@@ -13,11 +13,15 @@ import { UpgradeModal } from '../components/UpgradeModal'
 export const CommonOperationForm = ({
   handleNumbers,
   icon,
-  multiple
+  title,
+  multiple,
+  single
 } : {
   handleNumbers: (firstNumber: number, secondNumber: number) => Promise<string>
   icon: IconType,
-  multiple?: boolean
+  title: string,
+  multiple?: boolean,
+  single?: boolean
 }) => {
   const [isModalOpen, setIsModalOpen] = useState(false)
   const [firstNumber, setFirstNumber] = useState('')
@@ -45,6 +49,7 @@ export const CommonOperationForm = ({
   return (
     <article>
       <div className='flex flex-col md:flex-row justify-center items-start gap-10'>
+        <h3>{ title }</h3>
         <form onSubmit={handleSubmit} className="flex flex-col gap-4">
           <div>
             <TextInput
@@ -57,18 +62,18 @@ export const CommonOperationForm = ({
               onChange={(e) => setFirstNumber(e.target.value)}
             />
           </div>
-          <div>
+          {!single && <div>
             <TextInput
               type="number"
               placeholder="Enter your second number"
               icon={icon}
-              required
+              required={!single}
               shadow
               sizing='lg'
               value={secondNumber}
               onChange={(e) => setSecondNumber(e.target.value)}
             />
-          </div>
+          </div>}
           { multiple && <Button type="button" size='md' outline onClick={handleOpenModal}><FaPlus className="mr-2 h-5 w-5" />Add number</Button> }
           <Button type="submit" size='xl'><FaEquals /></Button>
         </form>

@@ -1,13 +1,24 @@
 'use client'
+import { post } from '@/app/services/service'
+import { updateUserContext } from '@/app/utils/updateContext'
+import { useAppContext } from '@/context/AppContext'
 import { Breadcrumb } from 'flowbite-react'
+import { FaAsterisk } from 'react-icons/fa6'
 import { HiHome } from 'react-icons/hi'
 import { CommonOperationForm } from '../components/CommonOperationForm'
-import { FaAsterisk } from 'react-icons/fa6'
 
 export default function () {
-  const handleNumbers = (firstNumber: number, secondNumber: number) => {
-    console.log(firstNumber)
-    console.log(secondNumber)
+  const context = useAppContext()
+
+  const handleNumbers = async (firstNumber: number, secondNumber: number): Promise<string> => {
+    const result = await post(context.token, '/multiplication', {
+      first_number: firstNumber,
+      second_number: secondNumber
+    })
+
+    updateUserContext(result.data.user, result.newToken, context)
+
+    return result.data.result
   }
 
   return (
@@ -19,7 +30,7 @@ export default function () {
         <Breadcrumb.Item href="/dashboard/multiplication">Multiplication</Breadcrumb.Item>
       </Breadcrumb>
       <h3 className='text-3xl font-semibold text-gray-900'>Multiplication</h3>
-      <CommonOperationForm handleNumbers={handleNumbers} icon={FaAsterisk} multiple />
+      <CommonOperationForm handleNumbers={handleNumbers} icon={FaAsterisk} title='Multiplication' multiple />
     </main>
   )
 }
