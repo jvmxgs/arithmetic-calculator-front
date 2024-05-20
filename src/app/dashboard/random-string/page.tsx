@@ -3,17 +3,16 @@ import { post } from '@/app/services/service'
 import { updateUserContext } from '@/app/utils/updateContext'
 import { useAppContext } from '@/context/AppContext'
 import { Breadcrumb } from 'flowbite-react'
-import { FaMinus } from 'react-icons/fa'
+import { FaDivide } from 'react-icons/fa6'
 import { HiHome } from 'react-icons/hi'
 import { CommonOperationForm } from '../components/CommonOperationForm'
 
 export default function () {
   const context = useAppContext()
 
-  const handleNumbers = async (firstNumber: number, secondNumber: number): Promise<string> => {
-    const result = await post(context.token, '/subtraction', {
-      first_number: firstNumber,
-      second_number: secondNumber
+  const handleNumbers = async (firstNumber: number): Promise<string> => {
+    const result = await post(context.token, '/sqrt', {
+      first_number: firstNumber
     })
 
     updateUserContext(result.user, context)
@@ -27,10 +26,10 @@ export default function () {
         <Breadcrumb.Item href="/dashboard" icon={HiHome}>
           Home
         </Breadcrumb.Item>
-        <Breadcrumb.Item href="/dashboard/subtraction">Subtraction</Breadcrumb.Item>
+        <Breadcrumb.Item href="/dashboard/sqrt">Random string</Breadcrumb.Item>
       </Breadcrumb>
-      <h3 className='text-3xl font-semibold text-gray-900'>Subtraction</h3>
-      <CommonOperationForm handleNumbers={handleNumbers} icon={FaMinus} title='Subtraction' multiple />
+      <h3 className='text-3xl font-semibold text-gray-900'>Random string</h3>
+      <CommonOperationForm handleNumbers={handleNumbers} icon={FaDivide} title='Random string' single />
     </main>
   )
 }

@@ -16,9 +16,9 @@ export default function () {
       second_number: secondNumber
     })
 
-    updateUserContext(result.data.user, result.newToken, context)
+    updateUserContext(result.user, context)
 
-    return result.data.result
+    return result.result
   }
 
   return (

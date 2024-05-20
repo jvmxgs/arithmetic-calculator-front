@@ -17,9 +17,9 @@ export default function () {
 
     console.log(result)
 
-    updateUserContext(result.data.user, result.newToken, context)
+    updateUserContext(result.user, context)
 
-    return result.data.result
+    return result.result
   }
 
   return (
