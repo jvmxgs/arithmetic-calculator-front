@@ -1,31 +1,24 @@
 'use client'
+import { updateUserContext } from '@/app/utils/updateContext'
+import { useAppContext } from '@/context/AppContext'
 import { Breadcrumb } from 'flowbite-react'
 import { FaPlus } from 'react-icons/fa'
 import { HiHome } from 'react-icons/hi'
-import axios from '../../utils/axiosConfig'
+import { post } from '../../services/service'
 import { CommonOperationForm } from '../components/CommonOperationForm'
 
 export default function () {
-  const handleNumbers = async (firstNumber: number, secondNumber: number): Promise<string> => {
-    try {
-      const token = localStorage.getItem('token') ?? ''
-      const response = await axios.post(
-        '/addition',
-        {
-          first_number: firstNumber,
-          second_number: secondNumber
-        },
-        {
-          headers: {
-            Authorization: `Bearer ${token}`
-          }
-        }
-      )
+  const context = useAppContext()
 
-      return response.data.data.result
-    } catch (e) {
-      return 'Something went wrong'
-    }
+  const handleNumbers = async (firstNumber: number, secondNumber: number): Promise<string> => {
+    const data = await post(context.token, '/addition', {
+      first_number: firstNumber,
+      second_number: secondNumber
+    })
+
+    updateUserContext(data.user, context)
+
+    return data.result
   }
 
   return (

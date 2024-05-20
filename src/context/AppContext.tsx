@@ -1,8 +1,8 @@
 import React, { ReactNode, createContext, useContext, useState } from 'react'
 
-interface User { first_name: string, last_name: string, email: string, credits: string }
+export interface User { first_name: string, last_name: string, email: string, credits: string }
 
-interface AppContextProps {
+export interface AppContextProps {
   token: string
   setToken: (user: string) => void
   user: User | null
